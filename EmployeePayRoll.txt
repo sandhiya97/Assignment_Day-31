@@ -1,0 +1,344 @@
+Enter password: ************
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 29
+Server version: 8.0.28 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> create database payroll_services;
+Query OK, 1 row affected (0.12 sec)
+
+mysql> use payroll_services;
+Database changed
+mysql> create table employee_payroll(id int, name char(20),salary double,start_date date);
+Query OK, 0 rows affected (1.74 sec)
+
+mysql> desc employee_payroll;
++------------+----------+------+-----+---------+-------+
+| Field      | Type     | Null | Key | Default | Extra |
++------------+----------+------+-----+---------+-------+
+| id         | int      | YES  |     | NULL    |       |
+| name       | char(20) | YES  |     | NULL    |       |
+| salary     | double   | YES  |     | NULL    |       |
+| start_date | date     | YES  |     | NULL    |       |
++------------+----------+------+-----+---------+-------+
+4 rows in set (0.18 sec)
+
+mysql>  Insert into employee_payroll(name,salary,start_date) values ('Naveen','120000','2022-3-23');
+Query OK, 1 row affected (0.14 sec)
+
+mysql>  Insert into employee_payroll(name,salary,start_date) values ('Kumar','125000','2012-2-25');
+Query OK, 1 row affected (0.09 sec)
+
+mysql>  Insert into employee_payroll(name,salary,start_date) values ('Divya','120000','2020-8-8');
+Query OK, 1 row affected (0.07 sec)
+
+mysql> select * from employee_payroll;
++------+---------+--------+------------+
+| id   | name    | salary | start_date |
++------+---------+--------+------------+
+| NULL | Naveen  | 120000 | 2022-03-23 |
+| NULL | Kumar   | 125000 | 2012-02-25 |
+| NULL | Divya   | 120000 | 2020-08-08 |
++------+---------+--------+------------+
+3 rows in set (0.00 sec)
+
+mysql> select salary from employee_payroll where name = 'Kumar';
++--------+
+| salary |
++--------+
+| 125000 |
++--------+
+1 row in set (0.00 sec)
+
+mysql> select * from employee_payroll
+    -> where start Between Cast('2020-7-1' As Date) and Date(now());
+ERROR 1054 (42S22): Unknown column 'start' in 'where clause'
+mysql> select * from employee_payroll
+    -> where start Between Cast('2012-02-25' As Date) and Date(now());
+ERROR 1054 (42S22): Unknown column 'start' in 'where clause'
+mysql> select * from employee_payroll
+    -> where start_date Between Cast('2020-7-1' As Date) and Date(now());
++------+---------+--------+------------+
+| id   | name    | salary | start_date |
++------+---------+--------+------------+
+| NULL | Naveen  | 120000 | 2022-03-23 |
+| NULL | Divya   | 120000 | 2020-08-08 |
++------+---------+--------+------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from employee_payroll
+    -> where start_date Between Cast('2012-02-25' As Date) and Date(now());
++------+---------+--------+------------+
+| id   | name    | salary | start_date |
++------+---------+--------+------------+
+| NULL | Naveen  | 120000 | 2022-03-23 |
+| NULL | Kumar   | 125000 | 2012-02-25 |
+| NULL | Divya   | 120000 | 2020-08-08 |
++------+---------+--------+------------+
+3 rows in set (0.00 sec)
+
+mysql> Alter table employee_payroll Add gender Char(1) after name;
+Query OK, 0 rows affected (2.28 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc employee_payroll;
++------------+----------+------+-----+---------+-------+
+| Field      | Type     | Null | Key | Default | Extra |
++------------+----------+------+-----+---------+-------+
+| id         | int      | YES  |     | NULL    |       |
+| name       | char(20) | YES  |     | NULL    |       |
+| gender     | char(1)  | YES  |     | NULL    |       |
+| salary     | double   | YES  |     | NULL    |       |
+| start_date | date     | YES  |     | NULL    |       |
++------------+----------+------+-----+---------+-------+
+5 rows in set (0.13 sec)
+
+mysql> select * from employee_payroll;
++------+---------+--------+--------+------------+
+| id   | name    | gender | salary | start_date |
++------+---------+--------+--------+------------+
+| NULL | Naveen  | NULL   | 120000 | 2022-03-23 |
+| NULL | Kumar   | NULL   | 125000 | 2012-02-25 |
+| NULL | Divya   | NULL   | 120000 | 2020-08-08 |
++------+---------+--------+--------+------------+
+3 rows in set (0.00 sec)
+
+mysql> update employee_payroll set gender = 'M' wher name = 'Kumar';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'wher name = 'Kumar'' at line 1
+mysql> update employee_payroll set gender = 'M' where name = 'Kumar';
+Query OK, 1 row affected (0.13 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update employee_payroll set gender = 'F' where name = 'Divya';
+Query OK, 1 row affected (0.10 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update employee_payroll set gender = 'M' where name = 'Naveen';
+Query OK, 1 row affected (0.09 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update employee_payroll set id = '1' where name = 'Naveen';
+Query OK, 1 row affected (0.07 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update employee_payroll set id = '2' where name = 'Kumar';
+Query OK, 1 row affected (0.04 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update employee_payroll set id = '3' where name = 'Divya';
+Query OK, 1 row affected (0.08 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from employee_payroll;
++------+---------+--------+--------+------------+
+| id   | name    | gender | salary | start_date |
++------+---------+--------+--------+------------+
+|    1 | Naveen  | M      | 120000 | 2022-03-23 |
+|    2 | Kumar   | M      | 125000 | 2012-02-25 |
+|    3 | Divya   | F      | 120000 | 2020-08-08 |
++------+---------+--------+--------+------------+
+3 rows in set (0.03 sec)
+
+mysql> select Avg(salary) from employee_payroll where Gender = 'M' Group By gender;
++-------------+
+| Avg(salary) |
++-------------+
+|      122500 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select Avg(salary) from employee_payroll where Gender = 'F' Group By gender;
++-------------+
+| Avg(salary) |
++-------------+
+|      120000 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select Avg(salary) from employee_payroll Group By gender;
++-------------+
+| Avg(salary) |
++-------------+
+|      122500 |
+|      120000 |
++-------------+
+2 rows in set (0.00 sec)
+
+mysql> select gender, Avg(salary) from employee_payroll Group By gender;
++--------+-------------+
+| gender | Avg(salary) |
++--------+-------------+
+| M      |      122500 |
+| F      |      120000 |
++--------+-------------+
+2 rows in set (0.00 sec)
+
+mysql> select gender, Count(name) from employee_payroll Group By gender;
++--------+-------------+
+| gender | Count(name) |
++--------+-------------+
+| M      |           2 |
+| F      |           1 |
++--------+-------------+
+2 rows in set (0.00 sec)
+
+mysql> select Gender, Sum(salary) from employee_payroll Group By gender;
++--------+-------------+
+| Gender | Sum(salary) |
++--------+-------------+
+| M      |      245000 |
+| F      |      120000 |
++--------+-------------+
+2 rows in set (0.00 sec)
+
+mysql> select Sum(salary) from employee_payroll where gender = 'M' Group By gender;
++-------------+
+| Sum(salary) |
++-------------+
+|      245000 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select Max(salary) from employee_payroll where gender = 'M' Group By gender;
++-------------+
+| Max(salary) |
++-------------+
+|      125000 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> Alter table employee_payroll Add phone_num char(10) after name;
+Query OK, 0 rows affected (1.89 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from employee_payroll;
++------+---------+-----------+--------+--------+------------+
+| id   | name    | phone_num | gender | salary | start_date |
++------+---------+-----------+--------+--------+------------+
+|    1 | Naveen  | NULL      | M      | 120000 | 2022-03-23 |
+|    2 | Kumar   | NULL      | M      | 125000 | 2012-02-25 |
+|    3 | Divya   | NULL      | F      | 120000 | 2020-08-08 |
++------+---------+-----------+--------+--------+------------+
+3 rows in set (0.00 sec)
+
+mysql> Alter table employee_payroll Add address char(300) after phone_num;
+ERROR 1074 (42000): Column length too big for column 'address' (max = 255); use BLOB or TEXT instead
+mysql> Alter table employee_payroll Add address char(250) after phone_num;
+Query OK, 0 rows affected (0.58 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> Alter table employee_payroll Add department char(250) after address;
+Query OK, 0 rows affected (0.59 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from employee_payroll;
++------+---------+-----------+---------+------------+--------+--------+------------+
+| id   | name    | phone_num | address | department | gender | salary | start_date |
++------+---------+-----------+---------+------------+--------+--------+------------+
+|    1 | Naveen  | NULL      | NULL    | NULL       | M      | 120000 | 2022-03-23 |
+|    2 | Kumar   | NULL      | NULL    | NULL       | M      | 125000 | 2012-02-25 |
+|    3 | Divya   | NULL      | NULL    | NULL       | F      | 120000 | 2020-08-08 |
++------+---------+-----------+---------+------------+--------+--------+------------+
+3 rows in set (0.00 sec)
+
+mysql> Alter table employee_payroll Alter address set Default 'ABC';
+Query OK, 0 rows affected (0.38 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from employee_payroll;
++------+---------+-----------+---------+------------+--------+--------+------------+
+| id   | name    | phone_num | address | department | gender | salary | start_date |
++------+---------+-----------+---------+------------+--------+--------+------------+
+|    1 | Naveen  | NULL      | NULL    | NULL       | M      | 120000 | 2022-03-23 |
+|    2 | Kumar   | NULL      | NULL    | NULL       | M      | 125000 | 2012-02-25 |
+|    3 | Divya   | NULL      | NULL    | NULL       | F      | 120000 | 2020-08-08 |
++------+---------+-----------+---------+------------+--------+--------+------------+
+3 rows in set (0.04 sec)
+
+mysql> Alter table employee_payroll Rename colunn salary to Basic_Pay;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'salary to Basic_Pay' at line 1
+mysql> Alter table employee_payroll Rename colunn Salary to Basic_Pay;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Salary to Basic_Pay' at line 1
+mysql> Alter table employee_payroll Rename column Salary to Basic_Pay;
+Query OK, 0 rows affected (1.12 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> Alter table employee_payroll Add Deduction Doubt not null after Basic_pay;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Doubt not null after Basic_pay' at line 1
+mysql> Alter table employee_payroll Add Deduction Double not null after Basic_pay;
+Query OK, 0 rows affected (0.67 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> Alter table employee_payroll Add Taxable_Pay Double not null after Deduction;
+Query OK, 0 rows affected (1.38 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> Alter table employee_payroll Add Income_Tax Double not null after Taxable_pay;
+Query OK, 0 rows affected (0.62 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> Alter table employee_payroll Add Net_Pay Double not null after Income_Tax;
+Query OK, 0 rows affected (0.75 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from employee_payroll;
++------+---------+-----------+---------+------------+--------+-----------+-----------+-------------+------------+---------+------------+
+| id   | name    | phone_num | address | department | gender | Basic_Pay | Deduction | Taxable_Pay | Income_Tax | Net_Pay | start_date |
++------+---------+-----------+---------+------------+--------+-----------+-----------+-------------+------------+---------+------------+
+|    1 | Naveen  | NULL      | NULL    | NULL       | M      |    120000 |         0 |           0 |          0 |       0 | 2022-03-23 |
+|    2 | Kumar   | NULL      | NULL    | NULL       | M      |    125000 |         0 |           0 |          0 |       0 | 2012-02-25 |
+|    3 | Divya   | NULL      | NULL    | NULL       | F      |    120000 |         0 |           0 |          0 |       0 | 2020-08-08 |
++------+---------+-----------+---------+------------+--------+-----------+-----------+-------------+------------+---------+------------+
+3 rows in set (0.00 sec)
+
+mysql> update employee_payroll set department = 'Sales' where name = 'Kumar';
+Query OK, 1 row affected (0.04 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from employee_payroll;
++------+---------+-----------+---------+------------+--------+-----------+-----------+-------------+------------+---------+------------+
+| id   | name    | phone_num | address | department | gender | Basic_Pay | Deduction | Taxable_Pay | Income_Tax | Net_Pay | start_date |
++------+---------+-----------+---------+------------+--------+-----------+-----------+-------------+------------+---------+------------+
+|    1 | Naveen  | NULL      | NULL    | NULL       | M      |    120000 |         0 |           0 |          0 |       0 | 2022-03-23 |
+|    2 | Kumar   | NULL      | NULL    | Sales      | M      |    125000 |         0 |           0 |          0 |       0 | 2012-02-25 |
+|    3 | Divya   | NULL      | NULL    | NULL       | F      |    120000 |         0 |           0 |          0 |       0 | 2020-08-08 |
++------+---------+-----------+---------+------------+--------+-----------+-----------+-------------+------------+---------+------------+
+3 rows in set (0.03 sec)
+
+mysql> Insert into employee_payroll(name, phone_num,department,gender,Basic_Pay,Deduction,Taxable_pay,Income_Tax,Net_Pay,start_date) values ('Priya','7894561230','Marketing','F','170000','40000','10000','25000','20000','2019-02-01');
+Query OK, 1 row affected (0.09 sec)
+
+mysql> select * from employee_payroll;
++------+---------+------------+---------+------------+--------+-----------+-----------+-------------+------------+---------+------------+
+| id   | name    | phone_num  | address | department | gender | Basic_Pay | Deduction | Taxable_Pay | Income_Tax | Net_Pay | start_date |
++------+---------+------------+---------+------------+--------+-----------+-----------+-------------+------------+---------+------------+
+|    1 | Naveen  | NULL       | NULL    | NULL       | M      |    120000 |         0 |           0 |          0 |       0 | 2022-03-23 |
+|    2 | Kumar   | NULL       | NULL    | Sales      | M      |    125000 |         0 |           0 |          0 |       0 | 2012-02-25 |
+|    3 | Divya   | NULL       | NULL    | NULL       | F      |    120000 |         0 |           0 |          0 |       0 | 2020-08-08 |
+| NULL | Priya   | 7894561230 | ABC     | Marketing  | F      |    170000 |     40000 |       10000 |      25000 |   20000 | 2019-02-01 |
++------+---------+------------+---------+------------+--------+-----------+-----------+-------------+------------+---------+------------+
+4 rows in set (0.04 sec)
+
+mysql> update employee_payroll set id = '4' where name = 'Priya';
+Query OK, 1 row affected (0.12 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from employee_payroll;
++------+---------+------------+---------+------------+--------+-----------+-----------+-------------+------------+---------+------------+
+| id   | name    | phone_num  | address | department | gender | Basic_Pay | Deduction | Taxable_Pay | Income_Tax | Net_Pay | start_date |
++------+---------+------------+---------+------------+--------+-----------+-----------+-------------+------------+---------+------------+
+|    1 | Naveen  | NULL       | NULL    | NULL       | M      |    120000 |         0 |           0 |          0 |       0 | 2022-03-23 |
+|    2 | Kumar   | NULL       | NULL    | Sales      | M      |    125000 |         0 |           0 |          0 |       0 | 2012-02-25 |
+|    3 | Divya   | NULL       | NULL    | NULL       | F      |    120000 |         0 |           0 |          0 |       0 | 2020-08-08 |
+|    4 | Priya   | 7894561230 | ABC     | Marketing  | F      |    170000 |     40000 |       10000 |      25000 |   20000 | 2019-02-01 |
++------+---------+------------+---------+------------+--------+-----------+-----------+-------------+------------+---------+------------+
+4 rows in set (0.00 sec)
+
+mysql>
